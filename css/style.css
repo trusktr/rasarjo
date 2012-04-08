@@ -1,0 +1,261 @@
+/* BROWSER RESET - http://meyerweb.com/eric/tools/css/reset/ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+a {
+	text-decoration: none;
+	color: #fff;
+	background: #333;
+}
+a:hover {
+	color: black;
+	background: yellow;
+}
+/* END BROWSER RESET */
+
+
+
+
+
+
+/*default font*/
+@font-face {
+    font-family: 'InconsolataMedium';
+    src: url('../font/inconsolata-webfont.eot');
+    src: local('?'), url('../font/inconsolata-webfont.woff') format('woff'), url('../font/inconsolata-webfont.ttf') format('truetype'), url('../font/inconsolata-webfont.svgz#InconsolataMedium') format('svg'), url('../font/inconsolata-webfont.svg#InconsolataMedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+.hidden {
+	display: none;
+	visibility: hidden;
+}
+
+body { 
+	font-family: InconsolataMedium;
+	font-size: 12px;
+	color: black;
+	overflow-x: hidden; /*ADDED*/
+}
+	/*#mouse {
+		width: 20px;
+		height: 20px;
+		border: solid red;
+		position: absolute;
+		z-index: 10;
+	}*/
+/*ADDED*/
+	#tooltip {
+		position: absolute;
+		z-index: 20;
+	}
+	#tooltip span {
+		background: #fff;
+		padding: 2px;
+		border: 1px solid #000;
+		display: inline-block;
+	}
+/*END ADDED*/
+	#header {
+		color: #fff;
+		border-bottom: 4px solid #000;
+		border-left: 3px solid #000;
+		border-top: 3px solid #000;
+		border-right: 3px solid #000;
+		background: #000;
+		left: 4px;
+		position: fixed;
+		z-index: 2;
+		top: 4px;
+	}
+		#header h1 {
+			display: inline;
+			letter-spacing: .2em;
+			font-weight: bold;
+		}
+		#header h1 a {
+			color: #000;
+			background: yellow;
+		}
+		#header h1 a:hover {
+			color: yellow;
+			background: #000;
+		}
+		#header menu {
+			display: inline;
+		}
+			#header menu li {
+				display: inline;
+				margin: 0 0 0 5px;
+			}
+				.menu_link {
+					color: white;
+					letter-spacing: .2em;
+				}
+				.menu_link:hover, .menu_link_active {
+					/*color: black;*/
+					/*background: yellow;*/
+					color: white;
+					background: #333;
+					border-bottom: 1px solid yellow;
+				}
+	#body {
+		z-index: 1;
+		padding: 23px 0 0 0;
+		position: relative;
+	}
+		#content {
+			z-index: 1;
+			position: absolute;
+			background: #fff;
+			width: 100%;
+			padding: 7px 0 0 8px;
+		}
+			.post, .page {
+				width: 800px;
+			}
+			.entry-title {
+				line-height: 14px;
+				margin: 2px 0 4px 0;
+				color: black;
+				letter-spacing:.2em;
+			}
+			.entry-content p {
+				letter-spacing: .2em;
+				margin: 0 0 6px 0;
+				text-align: justify;
+			}
+			.entry-content img {
+				width: 100%;
+				height: auto;
+			}
+			.entry-meta {
+				letter-spacing: .2em;
+				margin: 0 0 4px 4px;
+			}
+			.entry-utility {
+				position: fixed;
+				top: 29px;
+				left: 4px;
+				color: white;
+				letter-spacing: .2em;
+				width: 792px;
+				line-height: 14px;
+				padding: 2px 0 3px 4px;
+				background: url('../img/black-square.jpg') repeat-y;
+			}
+				.entry-utility h2 {
+					display: inline;
+					text-transform: uppercase;
+				}
+				.entry-utility span {
+					background: black;
+					border-top: 3px solid #000;
+					border-right: 4px solid #000;
+					border-bottom: 4px solid #000;
+				}
+		#grid {
+			z-index: 0;
+			position: absolute;
+		}
+			.box {
+				/*float: left;*/
+				float: left;
+				text-align: left;
+				margin: 4px 0 0 4px;
+			}
+				.box_link {
+					position: relative;
+				}
+					.box_thumb_img {
+						/*border: 1px dashed #999;*/
+						/*padding: 5px;*/
+						width: 200px;
+						height: 134px;
+						display: block;
+						opacity: .8/*.7*/;
+					}
+					.box_link:hover .box_thumb_img {
+						opacity: 1;
+					}
+					.box_desc {
+						position: absolute;
+						top: 11px;
+						line-height: 11px;
+						opacity: 1;
+						z-index: 1;
+						/*width: 200px;*/
+					}
+					.box_link:hover .box_desc {
+						opacity: 1;
+					}
+					.box_desc_title {
+						margin: 0;
+						color: red;
+						letter-spacing: .2em;
+						color: #fff;
+						background: #000;
+					}
+					.box_link:hover .box_desc_title {
+						color: #000;
+						background: yellow;
+					}
+		#close_button {
+			z-index: 1;
+			font-size: 18px;
+			padding: 0 3px 1px 3px;
+			font-family: arial;
+			background: black;
+		}
+		#close_button:hover {
+			background: yellow;
+		}
+	#loader_div {
+		z-index: 3;
+		position: absolute;
+	}
+		#loader_img {
+			width: 24px;
+			height: 5px;
+			display: block;
+		}
