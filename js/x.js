@@ -26,8 +26,8 @@ FOR FUN:
 */
 
 /*Settings*/
-var base_url		= 'http://x.iaesr.com',
-	wp_path			= '/wp',
+var base_url		= 'http://50.116.4.56', // without a trailing slash.
+	wp_path			= '/wp', // without a trailing slash.
 	regex_postUrl	= /^\/[0-9]+\/[a-z0-9\-]+\/$/;
 
 /*Only change if you know what you're doing.*/	
