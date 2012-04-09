@@ -107,13 +107,13 @@ function open_content(path, type) {
 		$target_item = $( '#box_' + (path.value.split('/'))[1] );
 		console.log('open_content(post:'+(path.value.split('/'))[1] +')'); //###############################################################################
 		
-//		$image = $target_item.find('.box_thumb');
-//		img_w = $image.outerWidth(true);
-//		img_h = $image.outerHeight(true);
+		$image = $target_item.find('.box_thumb');
+		img_w = $image.outerWidth(true);
+		img_h = $image.outerHeight(true);
 		
 		top_left( $('#loader_div'), 'absolute',
-			/*Top*/		$target_item.offset().top + img_h/2 - loader_h/2,
-			/*Left*/	$target_item.offset().left + img_w/2 - loader_w/2
+			/*Top*/		$image.offset().top + img_h/2 - loader_h/2,
+			/*Left*/	$image.offset().left + img_w/2 - loader_w/2
 		);
 	}
 	
