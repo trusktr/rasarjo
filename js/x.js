@@ -26,13 +26,25 @@ FOR FUN:
 */
 
 /*Settings*/
+/*
+Before setting the options below, do the following in WordPress:
+	-- Set the permalink structure to /%post_id%/%postname%/
+	-- Set the desired thumbnail width and height in the media settings.
+	-- Customize your menu in wordpress.
+*/
 var base_url		= 'http://50.116.4.56', // without a trailing slash.
 	wp_path			= '/wp', // without a trailing slash.
-	regex_postUrl	= /^\/[0-9]+\/[a-z0-9\-]+\/$/;
+	aThumbnailSize	= [200, 134]; // set this to match the thumbnail size of WordPress' media settings.
 
-/*Only change if you know what you're doing.*/	
-var $clicked_item = null,
-	
+/*Only change these if you know what you're doing.*/
+	regex_postUrl	= /^\/[0-9]+\/[a-z0-9\-]+\/$/; // This must match the permalink structure (if you'd like to have a different permalink structure).
+
+
+
+/*Don't change these unless you're ready to see your site break or your ready to do major
+  modifications, this is part of the internal functionality.*/
+var wp_url = base_url+wp_path,
+	$clicked_item = null,
 	interface_ready = false, //ADDED
 	menu_ready = false,
 	body_ready = false; //END ADDED
@@ -82,7 +94,7 @@ function open_content(path, type) {
 	if (type == 'page')
 	{
 		$target_item = $('.menu_link[href*="'+(path.value.split('/'))[1]+'"]');
-//alert('open_content(page)'); //###############################################################################
+		console.log('open_content(page)'); //###############################################################################
 		top_left( $('#loader_div'), 'absolute',
 			/*Top*/		$target_item.offset().top + $target_item.height()/2 - loader_h/2,
 			/*Left*/	$target_item.offset().left + $target_item.width()/2 - loader_w/2
@@ -93,19 +105,20 @@ function open_content(path, type) {
 	else if (type == 'post')
 	{
 		$target_item = $( '#box_' + (path.value.split('/'))[1] );
-//alert('open_content(post)'); //###############################################################################
-		$image = $target_item.find('img');
-		img_w = $image.width();
-		img_h = $image.height();
+		console.log('open_content(post:'+(path.value.split('/'))[1] +')'); //###############################################################################
+		
+//		$image = $target_item.find('.box_thumb');
+//		img_w = $image.outerWidth(true);
+//		img_h = $image.outerHeight(true);
 		
 		top_left( $('#loader_div'), 'absolute',
-			/*Top*/		$image.offset().top + img_h/2 - loader_h/2,
-			/*Left*/	$image.offset().left + img_w/2 - loader_w/2
+			/*Top*/		$target_item.offset().top + img_h/2 - loader_h/2,
+			/*Left*/	$target_item.offset().left + img_w/2 - loader_w/2
 		);
 	}
 	
 	$('#loader_div').removeClass('hidden');
-	$('#content').load(base_url+wp_path+path.value+' .'+type, function() {
+	$('#content').load(wp_url+path.value+' .'+type, function() {
 		when_images_loaded( $('#content'), function() {
 			$('#loader_div').addClass('hidden');
 			$('#grid').hide();
@@ -174,16 +187,27 @@ function tooltips($target) {
 /*END ADDED*/
 
 $(document).ready(function() {
-
-	$('<div id="menu_dummy" class="hidden"></div>').appendTo('body').load(base_url+wp_path+'/ #menu-x-iaesr-com', function() {
+	console.log("document ready");
+	
+	$('#buffer').load(wp_url+'/ #wpSiteName', function() {
+		$('#siteName > a').text( $('#wpSiteName').text() );
+		$('head title').text( $('#wpSiteName').text() );
+		$('#buffer').html('');
+	});
+	
+	$('#buffer').load(wp_url+'/ .wpNavMenu > .menu', function() {
+		console.log("Creating the menu...");
 		
 		/* Remove list items from the ul to put them into the menu */
-		$('#menu-x-iaesr-com li a').each( function() {
+		$('#header menu').html( $('#buffer > .menu').html() );
+		
+		/*Give a class to our menu links.*/
+		$('#header menu li a').each( function() {
 			$(this).addClass('menu_link').attr('desc', 'testing');
 		});
-		$('#header menu').html( $('#menu-x-iaesr-com').html() ); //change this if you change the name of the menu in wordpress
 		
 		menu_ready = true; //ADDED //END ADDED
+		console.log('Created the menu.');
 //		alert('menu ready');
 		
 		/*Format:
@@ -206,16 +230,18 @@ $(document).ready(function() {
 				<a class="menu_link" href="#" >Hire</a>
 			</li>
 		*/
+		
+		$('#buffer').html('');
 	});
 	
 	/* create placeholder to load content into before manipulating*/
-	$('<div id="temp_container" class="hidden"></div>').appendTo('body').load(base_url+wp_path+' #wp_content', function(){
+	$('#buffer').load(wp_url+'/ #wp_content', function() {
 	
 		/*Create project items*/
 		$('#wp_content .post').each(function() {
 			$this = $(this);
 			var $url		= $this.find('.entry-title a').attr('href'),
-				post_id		= $url.match(/[0-9]+/), //the only number in the url
+				post_id		= $url.split(wp_path)[1].split('/')[1], //the first number in the part of the url after the wordpress path.
 				$title		= $this.find('.entry-title a').text(),
 				$img_url	= $this.find('.wp-post-image').attr('src'),
 				$img_desc	= $this.find('.wp-post-image').attr('alt'),
@@ -226,6 +252,8 @@ $(document).ready(function() {
 				$desc_title	= $('<span class="box_desc_title">XXX TITLE XXX</span>'),
 				$thumb		= $('<div class="box_thumb">'),
 				$thumb_img	= $('<img class="box_thumb_img" src="XXX IMG URL XXX" />');
+				
+				console.log($url);//#############################
 			
 			$('#grid').append($box);
 			$box.hide();
@@ -257,13 +285,13 @@ $(document).ready(function() {
 				</a>
 			</div>
 		*/
-		$('#temp_container').remove(); //might decide not to remove if other content needed later...
+		$('#buffer').html('');
 	});
 	
 	$('<a id="close_button" href="'+base_url+'">X</a>').appendTo('body').hide();
 	top_right( $('#close_button'), 'fixed', /*top*/4, /*right*/4 );
 	
-/*ADDED*/
+	/*A fake html mouse pointer.*/
 	// $('html').mouseenter(function(){
 		// $('#mouse').show();
 	// });
@@ -273,20 +301,18 @@ $(document).ready(function() {
 	// $('html').mousemove(function(e){
 		// $('#mouse').css('left', e.pageX + 3).css('top', e.pageY + 3);
 	// });
-/*END ADDED*/
 	
-/*ADDED*/
 	$('.box_link').live('mouseenter', function() {
 		$(this).find('.box_desc').stop().fadeTo(1000, 0);
 	});
+	
 	$('.box_link').live('mouseleave', function() {
 		$(this).find('.box_desc').stop().fadeTo(0, 1);
 	});
-/*END ADDED*/
 	
 	$('.menu_link, .box_link').live('click', function() {
 		$clicked_item = $(this);
-		$.address.value($clicked_item.attr('href').replace(base_url+wp_path, ''));
+		$.address.value($clicked_item.attr('href').replace(wp_url, '')); // extract the path from the url and set it as the new address value.
 		return false;
 	});
 	
@@ -338,7 +364,7 @@ $(document).ready(function() {
 
 
 			
-	$.address.externalChange(function(path){ //DUP A
+	$.address.externalChange(function(path){
 
 		function /*helper*/ when_interface_ready(callback) //ADDED
 		{
@@ -364,7 +390,7 @@ $(document).ready(function() {
 			
 //			alert('woo!');
 
-			if ( path.value === '/' ) { //CONT DUP A
+			if ( path.value === '/' ) { //DUP A
 				close_content();
 //				alert('home2');
 			}
@@ -392,7 +418,7 @@ $(document).ready(function() {
 });
 
 $(window).load(function() {
-	reorganize();
+//	reorganize();
 
 /*ADDED*/ //CONTINUE ##########################################################################
 	setTimeout(function () {

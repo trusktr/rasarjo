@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Rajorah</title>
+		<title>Muah hah haha</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=2.0, minimum-scale=2.0, maximum-scale=2.0" />
 		<meta name="viewport" content="width=device-width; initial-scale=2.0">
@@ -35,11 +35,13 @@
 		<!--<div id="mouse"></div>-->
 	<!-- END ADDED -->
 		<div id="wrapper">
+			
 			<div id="header">
-				<h1><a href="<?= $site_url ?>">RASARJO</a></h1>
+				<h1 id="siteName"><a href="<?php echo $site_url ?>">Muah hah haha</a></h1>
 				<menu>
 				</menu>
 			</div><!-- #header -->
+			
 			<div id="body">
 				<noscript>Javascript must be enabled to view the site.</noscript>
 
@@ -47,14 +49,18 @@
 				</div>
 
 				<div id="grid">
-
 				</div><!-- #grid -->
 
 			</div><!-- #content -->
+			
 			<div id="footer"></div>
 		</div><!-- #wrapper -->
+		
 		<div id="loader_div" class="hidden">
 			<img id="loader_img" src="http://x.iaesr.com/img/loader5.gif">
+		</div>
+		
+		<div id="buffer" class="hidden">
 		</div>
 
 		<script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>

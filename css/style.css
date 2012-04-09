@@ -116,6 +116,7 @@ body {
 		#header h1 a {
 			color: #000;
 			background: yellow;
+			text-transform: uppercase;
 		}
 		#header h1 a:hover {
 			color: yellow;
