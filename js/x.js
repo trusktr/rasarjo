@@ -161,16 +161,16 @@ function tooltips($target) {
         // you might want to adjust to get the right result
     /* END CONFIG */
     $($target).live('mouseenter', function(e) {
-        tip_content = $(this).attr('title');
-        $(this).removeAttr('title');
-        $('body').append('<div id="tooltip"><span>'+ tip_content +'</span></div>');
+        tip_content = $(this).attr('data-tooltip');
+//        $(this).removeAttr('title');
+        $('body').append('<div id="tooltip" style="max-width: 200px;"><span>'+ tip_content +'</span></div>');
         $('#tooltip')
             .css('top',(e.pageY + xOffset) + 'px')
             .css('left',(e.pageX + yOffset) + 'px')
-            .fadeOut(0).delay(1000).fadeIn(0);
+            .fadeOut(0).delay(0).fadeIn(0);
     });
     $($target).live('mouseleave', function(e) {
-        $(this).attr('title', tip_content);
+//        $(this).attr('title', tip_content);
         $('#tooltip').stop().remove();
     });
     $($target).live('mousemove', function(e) {
@@ -189,12 +189,18 @@ function tooltips($target) {
 $(document).ready(function() {
 	console.log("document ready");
 	
+/*LOAD THE TITLE AND SITE DESCRITION*/
 	$('#buffer').load(wp_url+'/ #wpSiteName', function() {
 		$('#siteName > a').text( $('#wpSiteName').text() );
 		$('head title').text( $('#wpSiteName').text() );
 		$('#buffer').html('');
 	});
+	$('#buffer').load('#wpSiteDescription', function() {
+		$('#siteName > a').attr('data-tooltip', $('#wpSiteDescription').text());
+		$('#buffer').html('');
+	});
 	
+/*CREATE THE MENU*/
 	$('#buffer').load(wp_url+'/ .wpNavMenu > .menu', function() {
 		console.log("Creating the menu...");
 		
@@ -245,9 +251,10 @@ $(document).ready(function() {
 				$title		= $this.find('.entry-title a').text(),
 				$img_url	= $this.find('.wp-post-image').attr('src'),
 				$img_desc	= $this.find('.wp-post-image').attr('alt'),
+				excerpt		= $this.find('.entry-summary').text(),
 				
 				$box		= $('<div class="box" id="box_'+post_id+'"></div>'),
-				$link		= $('<a class="box_link" title="'/*ADDED*/+$title+/*END ADDED*/'" href="XXX URL XXX"></a>'),
+				$link		= $('<a class="box_link" data-title="'+$title+'" data-tooltip="'+excerpt+'" href="XXX URL XXX"></a>'),
 				$desc		= $('<div class="box_desc"></div>'),
 				$desc_title	= $('<span class="box_desc_title">XXX TITLE XXX</span>'),
 				$thumb		= $('<div class="box_thumb">'),
@@ -422,7 +429,7 @@ $(window).load(function() {
 
 /*ADDED*/ //CONTINUE ##########################################################################
 	setTimeout(function () {
-		tooltips( $('.box_link') );
+		tooltips( $('.box_link, #siteName a') );
 	}, 3000);
 /*END ADDED*/
 	
