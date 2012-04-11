@@ -32,6 +32,7 @@ Before setting the options below, do the following in WordPress:
 	-- Set the desired thumbnail width and height in the media settings.
 	-- Customize your menu in wordpress.
 */
+
 var base_url		= 'http://50.116.4.56', // without a trailing slash.
 	wp_path			= '/wp', // without a trailing slash.
 	aThumbnailSize	= [200, 134]; // set this to match the thumbnail size of WordPress' media settings.
@@ -190,15 +191,12 @@ $(document).ready(function() {
 	console.log("document ready");
 	
 /*LOAD THE TITLE AND SITE DESCRITION*/
-	$('#buffer').load(wp_url+'/ #wpSiteName', function() {
+	$('#buffer').load(wp_url+'/ header', function() {
 		$('#siteName > a').text( $('#wpSiteName').text() );
+		$('#siteName > a').attr('data-tooltip', $('#wpSiteDescription').text() );
 		$('head title').text( $('#wpSiteName').text() );
-		$('#buffer').html('');
 	});
-	$('#buffer').load('#wpSiteDescription', function() {
-		$('#siteName > a').attr('data-tooltip', $('#wpSiteDescription').text());
-		$('#buffer').html('');
-	});
+	$('#buffer').html('');
 	
 /*CREATE THE MENU*/
 	$('#buffer').load(wp_url+'/ .wpNavMenu > .menu', function() {
@@ -213,7 +211,7 @@ $(document).ready(function() {
 		});
 		
 		menu_ready = true; //ADDED //END ADDED
-		console.log('Created the menu.');
+		console.log('Menu constructed.');
 //		alert('menu ready');
 		
 		/*Format:
@@ -237,11 +235,12 @@ $(document).ready(function() {
 			</li>
 		*/
 		
-		$('#buffer').html('');
 	});
+	$('#buffer').html('');
 	
 	/* create placeholder to load content into before manipulating*/
 	$('#buffer').load(wp_url+'/ #wp_content', function() {
+		console.log('Constructing the body...');
 	
 		/*Create project items*/
 		$('#wp_content .post').each(function() {
@@ -277,8 +276,8 @@ $(document).ready(function() {
 			});
 		});
 		
-		body_ready = true; //ADDED //END ADDED
-//		alert('body ready');
+		body_ready = true;
+		console.log('Body constructed.');
 		
 		/*Format:
 			<div class="box">
@@ -292,11 +291,12 @@ $(document).ready(function() {
 				</a>
 			</div>
 		*/
-		$('#buffer').html('');
 	});
+	$('#buffer').html('');
 	
 	$('<a id="close_button" href="'+base_url+'">X</a>').appendTo('body').hide();
 	top_right( $('#close_button'), 'fixed', /*top*/4, /*right*/4 );
+	console.log('Close button constructed.');
 	
 	/*A fake html mouse pointer.*/
 	// $('html').mouseenter(function(){
@@ -373,7 +373,7 @@ $(document).ready(function() {
 			
 	$.address.externalChange(function(path){
 
-		function /*helper*/ when_interface_ready(callback) //ADDED
+		function /*helper*/ when_interface_ready(callback)
 		{
 			if (!menu_ready || !body_ready)
 			{
@@ -391,13 +391,13 @@ $(document).ready(function() {
 			}
 		}
 		
-		when_interface_ready( function() { //END ADDED
+		when_interface_ready( function() { 
 			
 			
 			
 //			alert('woo!');
 
-			if ( path.value === '/' ) { //DUP A
+			if ( path.value === '/' ) { //DUPLICATED A
 				close_content();
 //				alert('home2');
 			}
@@ -408,30 +408,20 @@ $(document).ready(function() {
 			else { //otherwise other links are pages for now.
 //				alert('page2');
 				open_content(path, 'page');
-			} //END CONT DUP A
+			} //DUPLICATED A
 				
-				
-		
-		}); //ADDED //END ADDED
+			
+		});
 
-	}); //END DUP A
+	});
 		
 		
-		
-		
-		
-		
-		
+	tooltips( $('.box_link, #siteName a') );
+			
 });
 
-$(window).load(function() {
+//$(window).load(function() {
 //	reorganize();
-
-/*ADDED*/ //CONTINUE ##########################################################################
-	setTimeout(function () {
-		tooltips( $('.box_link, #siteName a') );
-	}, 3000);
-/*END ADDED*/
 	
 	//Code that Expands Box
 	// $('.box img').click(function() {
@@ -443,4 +433,9 @@ $(window).load(function() {
 		// reorganize();
 	// });
 	
-});
+//});
+
+
+
+
+
